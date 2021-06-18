@@ -1,59 +1,138 @@
-//To create art file with just helixfinder info for trk and cal pat reco 
-
 #
 #  Prolog for production reconstruction jobs
 #
 #include "JobConfig/digitize/prolog.fcl"
+#include "CommonMC/fcl/prolog.fcl"
 #include "TrkHitReco/fcl/prolog.fcl"
+#include "TrkReco/fcl/prolog.fcl"
 #include "TrkPatRec/fcl/prolog.fcl"
+#include "Mu2eKinKal/fcl/prolog.fcl"
 #include "CaloReco/fcl/prolog.fcl"
 #include "CaloCluster/fcl/prolog.fcl"
+#include "CaloMC/fcl/prolog.fcl"
 #include "CalPatRec/fcl/prolog.fcl"
-#include "TrkReco/fcl/prolog.fcl"
+#include "Filters/fcl/prolog.fcl"
 #
 BEGIN_PROLOG
 Reconstruction : {
   producers : {
     @table::TrkHitReco.producers
     @table::Tracking.producers
-    
-    DeM : {
-      HelixFinders : [ "HelixFinderDe:Positive"]
+    @table::CalPatRec.producers
+    @table::CaloReco.producers
+    @table::CaloCluster.producers
+    @table::CaloMC.TruthProducers
+    @table::CrvResponsePackage.producers
+
+# instantiate explicit helix merger modules
+# NB: positive here refers to helicity, not charge!
+    MHDeM : {
+      @table::TrkReco.producers.MergeHelices
+      HelixFinders : [ "HelixFinderDe:Positive", "CalHelixFinderDe:Positive" ]
     }
-    DeP : {
-      //@table::TrkReco.producers.MergeHelices
-      HelixFinders : [ "HelixFinderDe:Negative"]
+    MHDeP : {
+      @table::TrkReco.producers.MergeHelices
+      HelixFinders : [ "HelixFinderDe:Negative", "CalHelixFinderDe:Negative" ]
     }
-    
+    MHDmuM : {
+      @table::TrkReco.producers.MergeHelices
+      HelixFinders : [ "HelixFinderDmu:Positive" , "CalHelixFinderDmu:Positive" ]
     }
-    
-    DeReco : [
+    MHDmuP : {
+      @table::TrkReco.producers.MergeHelices
+      HelixFinders : [ "HelixFinderDmu:Negative", "CalHelixFinderDmu:Negative" ]
+    }
+    # run helix merging on upstream, even though there is only one input collection,
+    # as the merging also suppresses duplicates
+    MHUeM : {
+      @table::TrkReco.producers.MergeHelices
+      HelixFinders : [ "HelixFinderUe:Negative" ]
+    }
+    MHUeP : {
+      @table::TrkReco.producers.MergeHelices
+      HelixFinders : [ "HelixFinderUe:Positive" ]
+    }
+    MHUmuM : {
+      @table::TrkReco.producers.MergeHelices
+      HelixFinders : [ "HelixFinderUmu:Negative" ]
+    }
+    MHUmuP : {
+      @table::TrkReco.producers.MergeHelices
+      HelixFinders : [ "HelixFinderUmu:Positive" ]
+    }
+    }
+
+  analyzers : { # these are specific to MC
+    recoCompressionCheck : @local::RecoCompression.Check
+  }
+# reconstruct multiple types of tracks.  These are separate sequences to allow granular execution
+# Downstream electron sequence (plus and minus), using merged helices
+  DeReco : [
     TimeClusterFinderDe, HelixFinderDe,  # TrkPatRec
+    CalTimePeakFinder, CalHelixFinderDe,  # CalPatRec
+    MHDeM, MHDeP, # helix merging
   ]
-    
-    # Track reco sequence
+# Upstream electron sequence (plus and minus): TrkPatRec only
+  UeReco : [
+    TimeClusterFinderUe, HelixFinderUe,   
+    MHUeM, MHUeP, # helix merging
+  ]
+# Downstream muon sequence (plus and minus)
+  DmuReco : [
+    TimeClusterFinderDmu, HelixFinderDmu,  # TrkPatRec
+    CalTimePeakFinderMu, CalHelixFinderDmu,  # CalPatRec
+    MHDmuM, MHDmuP, # helix merging
+  ]
+# Upstream muon sequence (plus and minus)
+  UmuReco : [
+    TimeClusterFinderUmu, HelixFinderUmu,   
+    MHUmuM, MHUmuP, # helix merging
+  ]
+# add protons for calibration TODO!
+
+# Track reco sequence
   TrkReco : [  @sequence::TrkHitReco.PrepareHits ] # Track hit
-  
-  # define products to keep
+# Calo reco
+  CaloReco : [ @sequence::CaloReco.Reco, @sequence::CaloCluster.Reco ]
+# CRV reco 
+  CrvReco : [ CrvRecoPulses, CrvCoincidence, CrvCoincidenceClusterFinder ]
+# full MC sequence; form the Calo and CRV matching, and compress based on reco content
+  MCReco :  [@sequence::CaloMC.TruthMatch,  CrvCoincidenceClusterMatchMC ]
+
+# define products to keep
 # First, high-level reco products, and associated sub-products
-  HighRecoProducts : [
-	    "keep mu2e::HelixSeeds_*_*_*_*"
-	  
+  HighRecoProducts : [	    
+	    "keep mu2e::HelixSeeds_*_*_*"
 	    ]
-      
-       EndSequence : [ recoCompressionCheck ]
+
+    EndSequence : [ recoCompressionCheck ]
 }
 Reconstruction.EndPath : [ @sequence::Reconstruction.EndSequence, Output  ]
 
+# override CalPatRec defaults: FIXME!
+Reconstruction.filters.CalHelixFinderDe.StrawHitFlagCollectionLabel                 : "FlagBkgHits:ComboHits"
+Reconstruction.filters.CalHelixFinderDmu.StrawHitFlagCollectionLabel                 : "FlagBkgHits:ComboHits"
+
 # all production tracks
 Reconstruction.TrackReco : [
-  @sequence::Reconstruction.DeReco]
+  @sequence::Reconstruction.DeReco,
+  @sequence::Reconstruction.UeReco,
+  @sequence::Reconstruction.DmuReco,
+  @sequence::Reconstruction.UmuReco ]
 #
 # Full reconstruction Path
 Reconstruction.RecoPath : [
-  @sequence::Reconstruction.TrkReco
+  @sequence::Reconstruction.CaloReco,
+  @sequence::Reconstruction.TrkReco,
+  @sequence::Reconstruction.CrvReco,
+  @sequence::Reconstruction.TrackReco
 ]
-
+# Full reco path with MC
+Reconstruction.RecoMCPath : [
+  @sequence::Reconstruction.RecoPath,
+  @sequence::Reconstruction.MCReco,
+  RecoFilter
+]
 # default output
 Reconstruction.Output : {
   module_type : RootOutput
@@ -66,6 +145,3 @@ Reconstruction.Output : {
 }
 
 END_PROLOG
-  
-  
-    

@@ -1,0 +1,71 @@
+//To create art file with just helixfinder info for trk and cal pat reco 
+
+#
+#  Prolog for production reconstruction jobs
+#
+#include "JobConfig/digitize/prolog.fcl"
+#include "TrkHitReco/fcl/prolog.fcl"
+#include "TrkPatRec/fcl/prolog.fcl"
+#include "CaloReco/fcl/prolog.fcl"
+#include "CaloCluster/fcl/prolog.fcl"
+#include "CalPatRec/fcl/prolog.fcl"
+#include "TrkReco/fcl/prolog.fcl"
+#
+BEGIN_PROLOG
+Reconstruction : {
+  producers : {
+    @table::TrkHitReco.producers
+    @table::Tracking.producers
+    
+    DeM : {
+      HelixFinders : [ "HelixFinderDe:Positive"]
+    }
+    DeP : {
+      //@table::TrkReco.producers.MergeHelices
+      HelixFinders : [ "HelixFinderDe:Negative"]
+    }
+    
+    }
+    
+    DeReco : [
+    TimeClusterFinderDe, HelixFinderDe,  # TrkPatRec
+  ]
+    
+    # Track reco sequence
+  TrkReco : [  @sequence::TrkHitReco.PrepareHits ] # Track hit
+  
+  # define products to keep
+# First, high-level reco products, and associated sub-products
+  HighRecoProducts : [
+	    "keep mu2e::HelixSeeds_*_*_*_*"
+	  
+	    ]
+      
+       EndSequence : [ recoCompressionCheck ]
+}
+Reconstruction.EndPath : [ @sequence::Reconstruction.EndSequence, Output  ]
+
+# all production tracks
+Reconstruction.TrackReco : [
+  @sequence::Reconstruction.DeReco]
+#
+# Full reconstruction Path
+Reconstruction.RecoPath : [
+  @sequence::Reconstruction.TrkReco
+]
+
+# default output
+Reconstruction.Output : {
+  module_type : RootOutput
+  SelectEvents : [ RecoPath ]
+  fileName    : @nil
+#  outputCommands : [ "keep *_*_*_*" ]
+  outputCommands : [ "drop *_*_*_*",
+  @sequence::Digitize.TriggerProducts,
+  @sequence::Reconstruction.HighRecoProducts]
+}
+
+END_PROLOG
+  
+  
+    

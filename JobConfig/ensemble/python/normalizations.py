@@ -13,7 +13,6 @@ import numpy as np
 
 from constants import (
     CAPTURES_PER_STOPPED_MUON,
-    ONEBB_CYCLE,
     RMC_GT_57_PER_CAPTURE,
     DIO_PER_STOPPED_MUON,
     IPA_DECAYS_PER_STOPPED_MUON,

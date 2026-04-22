@@ -36,7 +36,7 @@ RUN=1430
 DIO_EMIN=95
 RPC_EMIN=""
 RMC_EMIN=""
-RMC_kmax=""
+kmax=""
 IPA_EMIN=""
 TMIN=""
 BB=""
@@ -103,8 +103,8 @@ source ${CONFIG}
 if [[ ! -z ${DEM_emin} ]]; then
   DIO_EMIN=${DEM_emin}
 fi
-if [[ ! -z ${TMIN} ]]; then
-  TMIN=${TMIN}
+if [[ ! -z ${RPC_TMIN} ]]; then
+  TMIN=${RPC_TMIN}
 fi
 if [[ ! -z ${RPC_emin} ]]; then
   RPC_EMIN=${RPC_emin}
@@ -113,7 +113,7 @@ if [[ ! -z ${RMC_emin} ]]; then
   RMC_EMIN=${RMC_emin}
 fi
 if [[ ! -z ${RMC_kmax} ]]; then
-  RMC_kmax=${RMC_kmax}
+  kmax=${RMC_kmax}
 fi
 if [[ ! -z ${IPA_emin} ]]; then
   IPA_EMIN=${IPA_emin}

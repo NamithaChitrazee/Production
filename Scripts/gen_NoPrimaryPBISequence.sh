@@ -31,7 +31,7 @@ for pbifile in $outroot*.txt; do
   logfile=`echo ${pbifile} | sed s/txt/log/`
   echo '#include "Production/JobConfig/primary/NoPrimaryPBISequence.fcl"' >> $fclfile
   echo source.fileNames : [ \"${pbifile}\" ] >> $fclfile
-  echo source.runNumber : 1202 >> $fclfile
+  echo source.runNumber : 1430 >> $fclfile
   echo outputs.PrimaryOutput.fileName : \"$artfile\" >> $fclfile
 # now run the jobs
   echo creating art file $artfile

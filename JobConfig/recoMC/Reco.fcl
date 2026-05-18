@@ -16,4 +16,4 @@ physics :
   analyzers: @local::Reconstruction.analyzers
 }
 # the following is a placeholder
-#include "Production/Validation/database.fcl"
+#include "Production/JobConfig/common/database_empty.fcl"

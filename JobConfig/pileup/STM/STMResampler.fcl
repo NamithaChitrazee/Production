@@ -93,8 +93,8 @@ physics: {
       virtualDetectorIDs : @local::VirtualDetectorCounter.virtualDetectorIDs
     }
   }
-  HPGePath : [@sequence::Pileup.stmResamplerSequence, shiftStepsHPGe, @sequence::Common.g4Sequence, compressSTMDet ]
-  LaBrPath : [@sequence::Pileup.stmResamplerSequence, shiftStepsLaBr, @sequence::Common.g4Sequence, compressSTMDet ]
+  HPGePath : [@sequence::STMPileup.stmResamplerSequence, shiftStepsHPGe, @sequence::Common.g4Sequence, compressSTMDet ]
+  LaBrPath : [@sequence::STMPileup.stmResamplerSequence, shiftStepsLaBr, @sequence::Common.g4Sequence, compressSTMDet ]
   trigger_paths: [HPGePath]
   outPathCompressed : [genCountLogger, countVirtualDetectorHits, CompressedOutput]
   end_paths: [outPathCompressed]
@@ -135,6 +135,6 @@ physics.producers.g4run.Mu2eG4CommonCut: {}
 # physics.producers.g4run.debug.steppingVerbosityLevel : 1
 
 # copy over VD hits
-#include "Production/JobConfig/common/MT.fcl"
+# comment out of MT issue #include "Production/JobConfig/common/MT.fcl"
 #include "Production/JobConfig/common/epilog.fcl"
 #include "Production/JobConfig/pileup/epilog.fcl"

@@ -1,0 +1,30 @@
+#
+# Job to drop the trigger results and re-run the trigger on existing OnSpill digis
+# This filters out events triggered in the original processing as those are biased, using
+# only MC-true selected Triggerable events
+#
+#include "Offline/fcl/minimalMessageService.fcl"
+#include "Offline/fcl/standardServices.fcl"
+#include "Production/JobConfig/digitize/prolog.fcl"
+
+#include "mu2e-trig-config/core/trigProducers.fcl"
+#include "mu2e-trig-config/core/trigFilters.fcl"
+#include "mu2e-trig-config/core/trigRecoSequences.fcl"
+
+BEGIN_PROLOG
+# Select just triggerable events, to avoid bias from the original trigger
+TriggerableTrigger: {
+      module_type : TriggerResultsFilter
+      ProcessName : Digitize
+      TriggerNames : [ "TriggerableLHPath",    "TriggerableTwoTrackPath",    "TriggerableCaloPath" ]
+}
+# run ProcessCFOData to create EventHeader as a patch until that is put into the normal digi output
+TrigRecoSequences.cfoDataGen : [ TriggerableTrigger, ProcessCFOData ]
+END_PROLOG
+
+#include "mu2e-trig-config/core/trigSequences.fcl"
+#include "mu2e-trig-config/gen/trig_physMenuPSConfig_OnSpill.fcl"
+#include "mu2e-trig-config/gen/trig_physMenu_OnSpill.fcl"
+#
+#include "Production/JobConfig/digitize/Retrigger.fcl"
+

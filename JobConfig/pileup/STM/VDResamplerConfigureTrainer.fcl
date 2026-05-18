@@ -1,0 +1,32 @@
+# Provides a pass of the data and set up fcl's to train the SBDM models that 
+# describe particle distributions at a selected VD.
+
+#include "Offline/STMMC/fcl/prolog.fcl"
+#include "Offline/fcl/standardServices.fcl"
+
+process_name: VDResamplerConfigureTrainer
+
+source : @local::STMPileup.VDResamplerSource
+
+services : @local::Services.Sim
+
+physics: {
+  analyzers : {
+    VDResamplerTrainingSetup : {
+      module_type : VDResamplerConfigure
+      StepPointMCsTag : "compressDetStepMCsSTM:"
+      SimParticlemvTag : "compressDetStepMCsSTM:"
+      VirtualDetectorID : 116
+      VDResamplerDir : "Offline/STMMC/VDResamplerFiles"
+      fclDir : "Production/JobConfig/pileup/STM"
+      dataSourceTag : MuBeam
+      trainingThreshold : 100
+      doROOTDump: true
+    }
+  }
+  o1: [VDResamplerTrainingSetup]
+  end_paths: [o1]
+}
+
+# if allows ROOTDump, specify output file name
+services.TFileService.fileName : @nil 

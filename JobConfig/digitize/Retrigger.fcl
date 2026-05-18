@@ -1,0 +1,39 @@
+process_name: Retrigger
+source : {
+  module_type : RootInput
+  inputCommands: ["keep *",
+    "drop mu2e::HelixSeed*_*_*_*",
+    "drop mu2e::KalSeed*_*_*_*",
+    "drop mu2e::TriggerInfo_*_*_*",
+    "drop mu2e::CaloClusters_*_*_*",
+    "drop mu2e::TimeClusters_*_*_*",
+    "drop mu2e::CosmicTrackSeeds_*_*_*",
+    "drop mu2e::IntensityInfo*_*_*_*",
+    "drop mu2e::RecoCount_*_*_*",
+    "drop mu2e::PrescaleFilterFraction_*_*_Digitize"  ]
+}
+services : @local::Services.Reco
+physics : {
+  producers : {
+    @table::TrigProducers.producers
+  }
+  filters : {
+    @table::TrigFilters.filters
+    @table::Digitize.filters
+    @table::Trig_physMenuPSConfig
+    TriggerableTrigger : @local::TriggerableTrigger
+  }
+  @table::TrigSequences
+  OutputPath : [ Output ]
+}
+# don't remake digis
+physics.producers.TrigMakeSD : { module_type : NullProducer }
+# save all triggerable events
+physics.TriggerablePath : [ TriggerableTrigger ]
+physics.trigger_paths : [ TriggerablePath, @sequence::Trig_physMenu.trigger_paths ]
+outputs : @local::Digitize.Outputs
+outputs.Output.SelectEvents : [ TriggerablePath ]
+end_paths : [ OutputPath ]
+
+#include "Production/JobConfig/common/epilog.fcl"
+#include "mu2e-trig-config/core/trigDigiInputsEpilog.fcl"

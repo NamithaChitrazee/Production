@@ -28,7 +28,6 @@ services : {
     TFileService           : { fileName : "nts.owner.pbar_s2_toColl31Out.version.sequencer.root" }
     RandomNumberGenerator  : {defaultEngineKind: "MixMaxRng"}
     GeometryService        : { inputFile      : "Production/JobConfig/cd3/geom_baseline.txt"    }
-    ConditionsService      : { conditionsfile : "Offline/ConditionsService/data/conditions_01.txt"      }
     GlobalConstantsService : { inputFile      : "Offline/GlobalConstantsService/data/globalConstants_01.txt" }
     Mu2eG4Helper           : {}
     SeedService            : @local::automaticSeeds

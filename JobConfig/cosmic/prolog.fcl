@@ -225,7 +225,8 @@ Cosmic: {
     "keep mu2e::CosmicLivetime_*_*_*",
     "keep *_compressPV_*_*",
     "keep mu2e::GenParticles_*_*_*",
-    "keep *_cosmicFilter_*_*"
+    "keep *_cosmicFilter_*_*",
+    "keep mu2e::*FilterFraction_*_*_*"
   ]
 
 }

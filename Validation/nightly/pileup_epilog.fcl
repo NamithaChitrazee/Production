@@ -5,24 +5,24 @@ services.scheduler.num_schedules: 1
 services.scheduler.num_threads: 1
 
 outputs: {
-   valCombo: {
-      SelectEvents: [ "earlyFlashPath" ]
-      fileName: "pileup.art"
-      module_type: "RootOutput"
-      outputCommands: [
-         "drop *_*_*_*",
-         "keep art::EventIDs_*_*_*",
-         "keep mu2e::GenEventCount_*_*_*",
-         "keep mu2e::StatusG4_*_*_*",
-         "keep mu2e::SimParticleart::Ptrdoublestd::map_*_*_*",
-         "keep mu2e::StrawGasSteps_compressDetStepMCs_*_*",
-         "keep mu2e::CaloShowerSteps_compressDetStepMCs_*_*",
-         "keep mu2e::CrvSteps_compressDetStepMCs_*_*",
-         "keep mu2e::SimParticlemv_compressDetStepMCs_*_*",
-         "keep mu2e::GenParticles_compressDetStepMCs_*_*",
-	 "keep mu2e::SimParticlemv_TargetStopFilter_*_*"
-      ]
-   }
+  valCombo: {
+    SelectEvents: [ "earlyFlashPath" ]
+    fileName: "pileup.art"
+    module_type: "RootOutput"
+    outputCommands: [
+      "drop *_*_*_*",
+      "keep art::EventIDs_*_*_*",
+      "keep mu2e::GenEventCount_*_*_*",
+      "keep mu2e::StatusG4_*_*_*",
+      "keep mu2e::SimParticleart::Ptrdoublestd::map_*_*_*",
+      "keep mu2e::StrawGasSteps_compressDetStepMCs_*_*",
+      "keep mu2e::CaloShowerSteps_compressDetStepMCs_*_*",
+      "keep mu2e::CrvSteps_compressDetStepMCs_*_*",
+      "keep mu2e::SimParticlemv_compressDetStepMCs_*_*",
+      "keep mu2e::GenParticles_compressDetStepMCs_*_*",
+      "keep mu2e::SimParticlemv_TargetStopFilter_*_*",
+      "keep mu2e::*FilterFraction_*_*_*"       ]
+  }
 }
 
 

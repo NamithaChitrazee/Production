@@ -92,7 +92,7 @@ outputs: {
     module_type: RootOutput
     outputCommands:   [
       "drop *_*_*_*",
-      @sequence::Pileup.BeamToVDKeptProducts
+      @sequence::STMPileup.BeamToVDKeptProducts
     ]
     SelectEvents: [STMCompressedPath]
     fileName : "dts.owner.BeamToVD.version.sequencer.art"
@@ -116,6 +116,6 @@ physics.producers.g4run.SDConfig.enableSD: [virtualdetector]
 physics.producers.g4run.Mu2eG4CommonCut: {}
 
 # Epilog includes
-#include "Production/JobConfig/common/MT.fcl"
+# comment out of MT issue #include "Production/JobConfig/common/MT.fcl"
 #include "Production/JobConfig/common/epilog.fcl"
 #include "Production/JobConfig/pileup/epilog.fcl"

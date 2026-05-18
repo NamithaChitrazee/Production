@@ -1,0 +1,17 @@
+# Configure Trigger Mock Data Sample digitization
+#include "Production/JobConfig/digitize/Digitize.fcl"
+
+# Add trigger filters
+physics.filters : { @table::physics.filters @table::Trig_mdsMenuPSConfig }
+
+# No MC triggerable paths, just using the simulated trigger to select events
+physics.TriggerablePaths : [ ]
+physics.TriggerableBits  : [ ]
+
+# Add the trigger paths
+physics.trigger_paths : ["DigitizePath", @sequence::physics.TriggerableBits, @sequence::Trig_mdsMenu.trigger_paths]
+
+# Select all triggered events
+outputs.Output.SelectEvents : [ @sequence::Trig_mdsMenu.trigger_list ]
+
+#include "mu2e-trig-config/core/trigDigiInputsEpilog.fcl"

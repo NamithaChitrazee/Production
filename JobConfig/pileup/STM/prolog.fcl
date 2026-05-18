@@ -9,7 +9,7 @@
 #
 BEGIN_PROLOG
 
-Pileup: {
+STMPileup: {
   producers : {
     protonTimeOffset : @local::CommonMC.protonTimeOffset
   }
@@ -42,14 +42,19 @@ Pileup: {
     "keep art::EventIDs_*_*_*",
     "keep mu2e::GenParticles_*_*_*",
     "keep mu2e::GenEventCount_*_*_*", 
-    "keep mu2e::StepPointMCs_compressDetStepMCsSTM_*_*",
-    "keep mu2e::SimParticlemv_compressDetStepMCsSTM_*_*",
+    "keep mu2e::StepPointMCs_compressDetStepMCsSTM*_*_*",
+    "keep mu2e::SimParticlemv_compressDetStepMCsSTM*_*_*",
     "keep mu2e::SimTimeOffset_*_*_*",
     "keep mu2e::PhysicalVolumeInfomvs_g4run_*_*",
     "keep mu2e::StatusG4_*_*_*"
   ]
   # define some common sequences
   stmResamplerSequence : [genCounter, protonTimeOffset, stmResampler]
+
+  VDResamplerSource : {
+    module_type : RootInput
+    fileNames: @nil
+  }
 }
 
 END_PROLOG

@@ -1,0 +1,37 @@
+#
+# Reconstruct OffSpill events and rerun the trigger
+#
+#include "Production/JobConfig/recoMC/prolog.fcl"
+#include "Production/JobConfig/digitize/OffSpillRetrigger.fcl"
+physics.CHPath : [ @sequence::Reconstruction.CentralHelixPath ]
+physics.LHPath : [ @sequence::Reconstruction.LoopHelixPath ]
+physics.trigger_paths : [ LHPath, CHPath, @sequence::physics.trigger_paths ]
+process_name: RecoRetrigger
+outputs: {
+  LoopHelixOutput : {
+    @table::Reconstruction.Output
+    SelectEvents : [ "TriggerablePath" ]
+    fileName: "rec.owner.description-LH.version.sequencer.art"
+  }
+  CentralHelixOutput : {
+    @table::Reconstruction.Output
+    SelectEvents : [ "CHPath" ]
+     fileName: "rec.owner.description-CH.version.sequencer.art"
+ }
+}
+
+physics.producers: {
+  @table::physics.producers
+  @table::Reconstruction.producers
+}
+physics.filters: {
+  @table::physics.filters
+  @table::Reconstruction.filters
+}
+
+physics.EndPath : [ LoopHelixOutput, CentralHelixOutput ]
+physics.end_paths : [ EndPath ]
+
+#include "Production/JobConfig/recoMC/epilog.fcl"
+#include "Production/JobConfig/common/epilog.fcl"
+#include "mu2e-trig-config/core/trigDigiInputsEpilog.fcl"

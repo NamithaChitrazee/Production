@@ -265,7 +265,7 @@ Pileup: {
     spectrumVariable: kineticEnergy
     spectrum: {
       spectrumShape: tabulated
-      spectrumFileName: "Offline/ConditionsService/data/neutronSpectrum.txt"
+      spectrumFileName: "Offline/EventGenerator/data/neutronSpectrum.txt"
     }
   }
 
@@ -311,7 +311,8 @@ Pileup: {
     "keep mu2e::CaloShowerSteps_compressDetStepMCs_*_*",
     "keep mu2e::CrvSteps_compressDetStepMCs_*_*",
     "keep mu2e::SimParticlemv_compressDetStepMCs_*_*",
-    "keep mu2e::GenParticles_compressDetStepMCs_*_*" ]
+    "keep mu2e::GenParticles_compressDetStepMCs_*_*",
+    "keep mu2e::*FilterFraction_*_*_*" ]
   # define some common sequences
   beamResamplerSequence : [genCounter, protonTimeOffset, beamResampler]
   neutralsResamplerSequence : [genCounter, protonTimeOffset, neutralsResampler]

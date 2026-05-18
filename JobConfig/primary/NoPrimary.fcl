@@ -16,6 +16,7 @@ physics : {
       strawGasStepTag : "FindMCPrimary"
       caloShowerStepTag : "FindMCPrimary"
       crvStepTag : "FindMCPrimary"
+      surfaceStepTag : "FindMCPrimary"
       simParticleTags : [ "FindMCPrimary" ]
       mcTrajectoryTag : "FindMCPrimary"
       stepPointMCTags : [ "FindMCPrimary:virtualdetector", "FindMCPrimary:protonabsorber", "FindMCPrimary:stoppingtarget" ]
@@ -27,10 +28,12 @@ physics : {
 }
 #include "Production/JobConfig/common/epilog.fcl"
 services.SeedService.baseSeed : @local::Common.BaseSeed
-physics.PrimaryPath : [ FindMCPrimary, compressDetStepMCs ]
+physics.producers.genCounter : @local::Common.producers.genCounter
+physics.PrimaryPath : [ FindMCPrimary, genCounter, compressDetStepMCs ]
 physics.trigger_paths : [ PrimaryPath ]
 outputs : { PrimaryOutput : @local::Primary.PrimaryOutput }
 outputs.PrimaryOutput.fileName: "dts.owner.NoPrimary.version.sequencer.art"
-physics.EndPath : [ PrimaryOutput ]
+physics.analyzers.genCountLogger : @local::Common.analyzers.genCountLogger
+physics.EndPath : [ genCountLogger, PrimaryOutput ]
 physics.end_paths : [ EndPath ]
 

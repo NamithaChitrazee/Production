@@ -7,5 +7,5 @@ physics.filters.Triggerable : {
   prescaleOffset : 0
 }
 # turn off any filtering for triggerable output stream
-outputs.TriggerableOutput.RejectEvents : []
-outputs.TriggerableOutput.SelectEvents : []
+outputs.Output.RejectEvents : []
+outputs.Output.SelectEvents : []

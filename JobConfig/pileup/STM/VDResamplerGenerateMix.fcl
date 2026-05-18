@@ -1,0 +1,35 @@
+# Generate samples from multiple Score-Based Diffusion Models from a list of sources. 
+# The samples from each source are mixed according to their corresponding POTs. 
+# A demonstrator of module function and allows root sample dump for study. 
+
+#include "Offline/STMMC/fcl/prolog.fcl"
+#include "Offline/fcl/standardServices.fcl"
+
+process_name: VDResamplerGenerateMix
+
+source : @local::STMPileup.VDResamplerSource
+
+services : @local::Services.Sim
+
+physics: {
+  producers : {
+    # Enter a list [aaa, bbb, ...] of hitSummaryFiles and a list of corresponding POTs at run
+    VDResamplerGenerator : {
+      module_type : VDResamplerGenerateMix
+      hitSummaryFiles : @nil
+      potsPerFile : @nil
+      ModelFileDir: "Offline/STMMC/VDResamplerFiles"
+      # VirtualDetectorID : 116 # default break-off point for STM downstream
+      useHeun : true
+      diffusionSteps : 200
+      # VDz0 : 37700.39 # z-coordinates of VD116. Only change when another VD is used
+      # VDr : 2000.0 # radius of VD116. Only change when another VD is used
+      doROOTDump: true
+    }
+  }
+  o1: [VDResamplerGenerator]
+  end_paths: [o1]
+}
+
+# if allows ROOTDump, specify output file name
+services.TFileService.fileName : @nil 

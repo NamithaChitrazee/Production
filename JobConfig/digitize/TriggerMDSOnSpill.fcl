@@ -1,0 +1,4 @@
+#include "Production/JobConfig/digitize/TriggerMDS.fcl"
+
+# set the spill type to On-Spill
+physics.producers.EWMProducer.SpillType : 1

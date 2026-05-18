@@ -97,7 +97,7 @@ outputs : {
     module_type: RootOutput
     outputCommands : [
       "drop *_*_*_*",
-      @sequence::Pileup.BeamToVDKeptProducts
+      @sequence::STMPileup.BeamToVDKeptProducts
     ]
     SelectEvents: [ PileupPath ]
     fileName: "dts.owner.MuStopPileup.version.sequencer.art"
@@ -118,6 +118,6 @@ physics.producers.g4run.inputs: {
 }
 
 # Epilog includes
-#include "Production/JobConfig/common/MT.fcl"
+# comment out of MT issue #include "Production/JobConfig/common/MT.fcl"
 #include "Production/JobConfig/common/epilog.fcl"
 #include "Production/JobConfig/pileup/epilog.fcl"

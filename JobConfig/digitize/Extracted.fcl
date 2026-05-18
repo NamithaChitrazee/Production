@@ -1,5 +1,10 @@
 # configure Extracted digitization
 #include "Production/JobConfig/digitize/NoField.fcl"
+
+# add the trigger paths
+physics.filters : { @table::physics.filters @table::Trig_extrPosMenuPSConfig }
+physics.trigger_paths : ["DigitizePath", @sequence::physics.TriggerableBits, @sequence::Trig_extrPosMenu.trigger_paths]
+
 # use extracted geometry
 services.GeometryService.inputFile: "Offline/Mu2eG4/geom/geom_common_extracted.txt"
 # override CRV lookup tables, photon yields, etc. for the extracted position

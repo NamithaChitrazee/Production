@@ -171,7 +171,8 @@ Beam: {
     "keep mu2e::GenEventCount_*_*_*",
     "keep mu2e::StatusG4_*_*_*",
     "keep *_compressPV*_*_*",
-    "keep *_*Filter_*_*"
+    "keep *_*Filter_*_*",
+    "keep mu2e::*FilterFraction_*_*_*"
   ]
 
 }

@@ -1,0 +1,32 @@
+#
+# Reconstruct OnSpill events and rerun the trigger. This only reconstructs LoopHelices
+#
+#include "Production/JobConfig/recoMC/prolog.fcl"
+#
+#include "Production/JobConfig/digitize/OnSpillRetrigger.fcl"
+physics.RecoPath : [ @sequence::Reconstruction.OnSpillPath ]
+physics.trigger_paths : [ RecoPath, @sequence::physics.trigger_paths ]
+process_name: RecoRetrigger
+outputs: {
+  LoopHelixOutput : {
+    @table::Reconstruction.Output
+    SelectEvents : [ "TriggerablePath" ]
+    fileName: "rec.owner.description.version.sequencer.art"
+  }
+}
+
+physics.producers: {
+  @table::physics.producers
+  @table::Reconstruction.producers
+}
+physics.filters: {
+  @table::physics.filters
+  @table::Reconstruction.filters
+}
+
+physics.EndPath : [ LoopHelixOutput]
+physics.end_paths : [ EndPath ]
+
+#include "Production/JobConfig/recoMC/epilog.fcl"
+#include "Production/JobConfig/common/epilog.fcl"
+#include "mu2e-trig-config/core/trigDigiInputsEpilog.fcl"

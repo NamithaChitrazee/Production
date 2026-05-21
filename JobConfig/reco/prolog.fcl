@@ -134,7 +134,6 @@ Reconstruction : {
         AddHits : false
       }
       ExtrapolationSettings : @local::Mu2eKinKal.LHDRIFTXTRAP
-      MaterialSettings : @local::Mu2eKinKal.MAT
       Extend: true
       debug : 0
     }

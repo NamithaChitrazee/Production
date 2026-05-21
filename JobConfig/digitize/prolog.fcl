@@ -139,7 +139,7 @@ Digitize: {
     # Triggerable calo events
     TriggerableCalo : {
       module_type : CaloShowerSimFilter
-      MinParticleEnergy : 75.0
+      MinParticleEnergy : 68.0
       MinTotalEnergy    : 1e6
       CaloShowerSimCollection : "compressDigiMCs"
       particleTypes : [11, -11, 13, -13, 211, -211, 22]

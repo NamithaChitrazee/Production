@@ -32,6 +32,12 @@ echo "Reading configuration from $CONFIG..."
 
 while IFS='= ' read -r col1 col2
 do 
+    # Strip quotes from all values
+    col2="${col2%\"}"
+    col2="${col2#\"}"
+    col2="${col2%\'}"
+    col2="${col2#\'}"
+    
     if [[ "${col1}" == "livetime_combined" ]] ; then
       LIVETIME=${col2}
     fi
@@ -88,6 +94,15 @@ counter=0
 group_counter=1
 
 while IFS= read -r root_file; do
+  # Strip quotes from filenames
+  root_file="${root_file%\"}"
+  root_file="${root_file#\"}"
+  root_file="${root_file%\'}"
+  root_file="${root_file#\'}"
+  
+  # Skip empty lines
+  [[ -z "$root_file" ]] && continue
+  
   file_group+=("$root_file")
   counter=$((counter + 1))
 
@@ -98,7 +113,7 @@ while IFS= read -r root_file; do
     output_filename="${OUTPUT_DIR}/${OUTNAME}_${group_counter}.root"
 
     echo "[Group $group_counter] Merging ${#file_group[@]} files..."
-    hadd -f "$output_filename" "${file_group[@]}"
+    hadd -f -k "$output_filename" "${file_group[@]}"
     
     if [[ $? -eq 0 ]]; then
       echo "[Group $group_counter] ✓ Successfully created: $output_filename"
@@ -120,7 +135,7 @@ done < "$INPUT_LIST"
 if [[ ${#file_group[@]} -gt 0 ]]; then
   output_filename="${OUTPUT_DIR}/${OUTNAME}_${group_counter}.root"
   echo "[Group $group_counter] Merging final ${#file_group[@]} file(s)..."
-  hadd -f "$output_filename" "${file_group[@]}"
+  hadd -f -k "$output_filename" "${file_group[@]}"
   
   if [[ $? -eq 0 ]]; then
     echo "[Group $group_counter] ✓ Successfully created: $output_filename"

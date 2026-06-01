@@ -65,5 +65,4 @@ if __name__ == '__main__':
     parser.add_argument("--nsig", help="internal")
     parser.add_argument("--verbose", help="enable verbose debug output", default="false")
     args = parser.parse_args()
-    (args) = parser.parse_args()
     main(args)

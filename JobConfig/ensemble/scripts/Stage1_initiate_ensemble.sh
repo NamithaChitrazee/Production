@@ -110,7 +110,7 @@ BEAM_ONSPILL_TIME=$(echo "${BEAM_INFO}" | grep "on_spill_time=" | awk '{print $N
 BEAM_LIVETIME=$(echo "${BEAM_INFO}" | grep "livetime=" | awk '{print $NF}')
 BEAM_NPOT=$(echo "${BEAM_INFO}" | grep "^NPOT=" | awk '{print $NF}')
 BEAM_NMOT=$(echo "${BEAM_INFO}" | grep "^NMOT=" | awk '{print $NF}')
-BEAM_POT=$(echo "${BEAM_INFO}" | grep "^POT=" | awk '{print $NF}')
+#BEAM_POT=$(echo "${BEAM_INFO}" | grep "^POT=" | awk '{print $NF}')
 echo "      • POT: ${BEAM_POT}"
 # Energy cut parameters (hardcoded for now)
 RPC_EMIN=50
@@ -147,7 +147,7 @@ echo "   Output: ${TAG}.txt"
   echo "onspilltime=\"${LIVETIME}\""
   echo "BB=\"${BB}\""
   echo "DEM_emin=\"${DEM_EMIN}\""
-  echo "TMIN=\"${TMIN}\""
+  echo "RPC_TMIN=\"${TMIN}\""
   echo "RPC_emin=\"${RPC_EMIN}\""
   echo "RMC_emin=\"${RMC_EMIN}\""
   echo "RMC_kmax=\"${RMC_kmax}\""

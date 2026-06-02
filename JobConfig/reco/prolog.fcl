@@ -318,14 +318,13 @@ Reconstruction : {
   ]
   # Low reco products, useful for debugging and event display
   LowRecoProducts : [
-    "keep mu2e::ComboHits_*_*_*"
+    "keep mu2e::ComboHitCollection_*_*_*"
   ]
   GeneralProducts : [
     @sequence::Digitize.GeneralProducts,
     @sequence::Digitize.TriggerProducts # not sure we want to keep these
   ]
   # TODO: add products from reconstruction-level estimates of PBI from tracker and calorimeter
-
 }
 
 # OnSpill track reconstruction sequence: LoopHelix electrons and muons, downstream and upstream
@@ -388,7 +387,15 @@ Reconstruction.Output : {
     @sequence::Reconstruction.MidRecoProducts
   ]
 }
-
+# detailed output
+Reconstruction.DetailedOutput : {
+  @table::Reconstruction.Output
+  outputCommands: [
+  @sequence::Reconstruction.Output.outputCommands,
+  @sequence::Reconstruction.LowRecoProducts
+  ]
+}
+# customize for KalSeed regrow
 Reconstruction.RegrowOutput : {
   module_type : RootOutput
   fileName    : @nil

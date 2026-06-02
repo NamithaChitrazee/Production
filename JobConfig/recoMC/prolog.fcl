@@ -105,15 +105,17 @@ Reconstruction.LoopHelixPath : [
   @sequence::Reconstruction.MCReco
 ]
 
-# MC-specific output
-Reconstruction.Output : {
-  @table::Reconstruction.Output
-  outputCommands : [ "drop *_*_*_*",
-    @sequence::Reconstruction.GeneralProducts,
-    @sequence::Reconstruction.GeneralMCProducts,
-    @sequence::Reconstruction.HighRecoProducts,
-    @sequence::Reconstruction.HighRecoMCProducts,
-    @sequence::Reconstruction.MidRecoProducts
-  ]
-}
+# add MC-specific payload
+Reconstruction.Output : @local::Reconstruction.Output
+Reconstruction.Output.outputCommands : [
+  @sequence::Reconstruction.Output.outputCommands,
+  @sequence::Reconstruction.GeneralMCProducts,
+  @sequence::Reconstruction.HighRecoMCProducts
+]
+Reconstruction.DetailedOutput : @local::Reconstruction.DetailedOutput
+Reconstruction.DetailedOutput.outputCommands : [
+  @sequence::Reconstruction.DetailedOutput.outputCommands,
+  @sequence::Reconstruction.GeneralMCProducts,
+  @sequence::Reconstruction.HighRecoMCProducts
+]
 END_PROLOG

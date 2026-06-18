@@ -37,7 +37,6 @@ physics : {
       ComboHitCollection : RegrowSH
       StrawDigiIndexMap : "SelectReco:StrawDigiMap"
       CaloClusterCollection : "CaloClusterMaker"
-      KalSeedMCAssns : "SelectReco"
       RefitSettings : {
         @table::Mu2eKinKal.REGROW
         BFieldCorrection : true
@@ -48,7 +47,6 @@ physics : {
         AddHits : false
       }
       ExtrapolationSettings : @local::Mu2eKinKal.LHDRIFTXTRAP
-      MaterialSettings : @local::Mu2eKinKal.producers.KKDe.MaterialSettings
       Extend: false
       debug : 0
     }

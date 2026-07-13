@@ -1,5 +1,5 @@
 #
-# RMC External, phase-space model with 0 knockout
+# RMC Internal, phase-space model with 0 knockout
 #
 
 #include "Production/JobConfig/primary/RMCInternal.fcl"
